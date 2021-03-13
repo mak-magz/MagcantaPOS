@@ -1,0 +1,7 @@
+{
+  "name": "MagcantaPOS",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
