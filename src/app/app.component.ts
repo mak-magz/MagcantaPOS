@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DatabaseInitService } from './core/services/database/database-init.service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -10,5 +11,5 @@ export class AppComponent {
     { title: 'Sales', url: '/sales', icon: 'receipt' },
     { title: 'Inventory', url: '/inventory', icon: 'receipt' },
   ];
-  constructor() {}
+  constructor(private dbInitSvc: DatabaseInitService) {}
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ItemService } from 'src/app/shared/services/inventory/item.service';
 
 @Component({
   selector: 'app-inventory',
@@ -6,10 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./inventory.page.scss'],
 })
 export class InventoryPage implements OnInit {
+  constructor(private itemSvc: ItemService) {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
