@@ -1,0 +1,15 @@
+#functions-list {
+  ion-item {
+    --background: rgba(var(--ion-color-primary-rgb), 0.1);
+  }
+
+  .function-item:hover {
+    cursor: pointer;
+    --background: rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+}
+
+.ripple-parent {
+  position: relative;
+  overflow: hidden;
+}
