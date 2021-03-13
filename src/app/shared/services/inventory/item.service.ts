@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import PouchDB from 'pouchdb';
+import { BehaviorSubject } from 'rxjs';
 import { DatabaseService } from 'src/app/core/services/database/database.service';
 
 @Injectable({
@@ -18,9 +19,12 @@ export class ItemService {
     retry: true,
   };
 
+  private items$ = new BehaviorSubject(null);
+
   constructor(private databaseSvc: DatabaseService) {
     this.itemDB = databaseSvc.createDatabase(this.dbName);
     this.replicateDB();
+    this.fetchItems();
   }
 
   replicateDB() {
@@ -37,5 +41,25 @@ export class ItemService {
       .on('error', (error) => {
         console.error(error);
       });
+  }
+
+  async fetchItems() {
+    try {
+      const result = await this.itemDB.allDocs({
+        include_docs: true,
+        startkey: '_design',
+        descending: true,
+      })
+
+      const items = result.rows.map((doc) => doc.doc);
+
+      this.items$.next([...items])
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  get _allItems() {
+    return this.items$.asObservable();
   }
 }
