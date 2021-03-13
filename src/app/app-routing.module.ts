@@ -8,10 +8,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'folder/:id',
-    loadChildren: () => import('./folder/folder.module').then( m => m.FolderPageModule)
-  },
-  {
     path: 'dashboard',
     loadChildren: () => import('./core/pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
   }
