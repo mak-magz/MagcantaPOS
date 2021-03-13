@@ -24,3 +24,19 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.page-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 25px;
+  padding: 20px;
+
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+
+  --ion-text-color: #43425d;
+  --ion-text-color-rgb: 67, 66, 93;
+
+  background: var(--ion-background-color);
+  color: var(--ion-text-color);
+}
