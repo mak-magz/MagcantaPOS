@@ -9,7 +9,6 @@ export class AppComponent {
     { title: 'Dashboard', url: '/dashboard', icon: 'bar-chart' },
     { title: 'Sales', url: '/sales', icon: 'receipt' },
     { title: 'Inventory', url: '/inventory', icon: 'receipt' },
-
   ];
   constructor() {}
 }
