@@ -11,7 +11,7 @@ import { DatabaseService } from 'src/app/core/services/database/database.service
 export class ItemService {
   private readonly dbName: string = 'inventory';
   private readonly remote: string =
-    'https://couchadmin:couchadmin@127.0.0.1:5984/' + this.dbName;
+    'http://couchadmin:couchadmin@127.0.0.1:5984/' + this.dbName;
 
   public itemDB: PouchDB.Database;
 
@@ -41,7 +41,7 @@ export class ItemService {
         this.fetchItems();
       })
       .on('error', (error) => {
-        console.error(error);
+        console.error("Replication error! :", error);
       });
   }
 
