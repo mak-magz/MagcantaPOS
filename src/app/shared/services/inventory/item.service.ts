@@ -37,6 +37,7 @@ export class ItemService {
     rep
       .on('change', (info) => {
         console.log('changed: ', info);
+        this.fetchItems();
       })
       .on('error', (error) => {
         console.error(error);
@@ -59,6 +60,7 @@ export class ItemService {
     }
   }
 
+  /* Getter functions */
   get _allItems() {
     return this.items$.asObservable();
   }
