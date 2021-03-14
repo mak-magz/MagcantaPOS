@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NewItemPage } from 'src/app/shared/components/modals/new-item/new-item.page';
+import { AlertService } from 'src/app/shared/services/alerts/alert.service';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { ItemService } from 'src/app/shared/services/inventory/item.service';
 export class FunctionButtonsPage implements OnInit {
 
   constructor(
+    private alertSvc: AlertService,
     private modalCtrl: ModalController,
     private itemSvc: ItemService
   ) { }
@@ -22,23 +24,6 @@ export class FunctionButtonsPage implements OnInit {
     const modal = await this.modalCtrl.create({ component: NewItemPage });
 
     await modal.present();
-
-    const { data: newItem } = await modal.onDidDismiss();
-
-    if (newItem) {
-      const { result: searchRes } = await this.itemSvc.searchItem(newItem.barcode);
-      if (searchRes.docs.length > 0) {
-        console.error("Item already exists! :", searchRes.docs)
-      } else {
-        const { result, error } = await this.itemSvc.addItem({ ...newItem })
-        if (result.ok) {
-          console.log("Item has been added");
-        } else {
-          console.error("Document creation failed: ", result);
-          console.error("Error Code: ", error);
-        }
-      }
-    }
   }
 
 }
