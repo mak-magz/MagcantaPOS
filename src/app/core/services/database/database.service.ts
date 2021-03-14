@@ -16,13 +16,13 @@ export class DatabaseService {
 	}
 
 	replicateDB(
-		{ sourceDB, destinationDB, options }:
+		{ sourceDB, targetDB, options }:
 			{
 				sourceDB: PouchDB.Database;
-				destinationDB: string;
+				targetDB: string;
 				options: object;
 			}) {
-		return sourceDB.replicate.to(destinationDB, options);
+		return sourceDB.replicate.to(targetDB, options);
 	}
 
 	syncDB({ sourceDB, targetDB, options }: { sourceDB: PouchDB.Database, targetDB: string, options: object }) {
