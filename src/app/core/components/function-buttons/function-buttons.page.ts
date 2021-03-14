@@ -26,8 +26,18 @@ export class FunctionButtonsPage implements OnInit {
     const { data: newItem } = await modal.onDidDismiss();
 
     if (newItem) {
-      console.log(newItem)
-      const { result, error } = await this.itemSvc.addItem({ ...newItem })
+      const { result: searchRes } = await this.itemSvc.searchItem(newItem.barcode);
+      if (searchRes.docs.length > 0) {
+        console.error("Item already exists! :", searchRes.docs)
+      } else {
+        const { result, error } = await this.itemSvc.addItem({ ...newItem })
+        if (result.ok) {
+          console.log("Item has been added");
+        } else {
+          console.error("Document creation failed: ", result);
+          console.error("Error Code: ", error);
+        }
+      }
     }
   }
 
