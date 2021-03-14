@@ -26,6 +26,7 @@ export class ItemService {
     this.itemDB = databaseSvc.createDatabase(this.dbName);
     this.replicateDB();
     this.fetchItems();
+    this.listenToChanges();
   }
 
   replicateDB() {
@@ -36,10 +37,6 @@ export class ItemService {
     });
 
     rep
-      .on('change', (info) => {
-        console.log('changed: ', info);
-        this.fetchItems();
-      })
       .on('error', (error) => {
         console.error("Replication error! :", error);
       });
@@ -54,11 +51,18 @@ export class ItemService {
       })
 
       const items = result.rows.map((doc) => doc.doc);
-
       this.items$.next([...items])
+
     } catch (error) {
       console.error(error)
     }
+  }
+
+  listenToChanges() {
+    this.itemDB.changes({ since: "now", live: true }).on("change", (data) => {
+      console.log("changed data: ", data);
+      this.fetchItems();
+    });
   }
 
   async addItem(itemData: Item) {
