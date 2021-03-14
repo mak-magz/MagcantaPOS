@@ -1,3 +1,4 @@
+import { Item } from './../../models/Item';
 import { Injectable } from '@angular/core';
 
 import PouchDB from 'pouchdb';
@@ -60,7 +61,29 @@ export class ItemService {
     }
   }
 
+  async addItem(itemData: Item) {
+    const timesStamp = new Date().getTime();
+    const id = `${timesStamp}-${Math.floor(Math.random() * 10000)}-${Math.floor(
+      Math.random() * 1000000000
+    )}`;
+
+    try {
+      return {
+        result: await this.itemDB.put({
+          _id: id,
+          ...itemData,
+        }),
+      };
+    } catch (error) {
+      return {
+        error: error,
+      };
+    }
+
+  }
+
   /* Getter functions */
+
   get _allItems() {
     return this.items$.asObservable();
   }
