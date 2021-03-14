@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NewItemPage } from 'src/app/shared/components/modals/new-item/new-item.page';
-import { AlertService } from 'src/app/shared/services/alerts/alert.service';
-import { ItemService } from 'src/app/shared/services/inventory/item.service';
 
 @Component({
   selector: 'app-function-buttons',
@@ -12,9 +10,7 @@ import { ItemService } from 'src/app/shared/services/inventory/item.service';
 export class FunctionButtonsPage implements OnInit {
 
   constructor(
-    private alertSvc: AlertService,
     private modalCtrl: ModalController,
-    private itemSvc: ItemService
   ) { }
 
   ngOnInit() {
