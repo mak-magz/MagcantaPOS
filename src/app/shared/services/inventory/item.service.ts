@@ -10,7 +10,7 @@ import { DatabaseService } from 'src/app/core/services/database/database.service
 export class ItemService {
   private readonly dbName: string = 'inventory';
   private readonly remote: string =
-    'http://couchadmin:couchadmin@127.0.0.1:5984/' + this.dbName;
+    'https://couchadmin:couchadmin@127.0.0.1:5984/' + this.dbName;
 
   public itemDB: PouchDB.Database;
 
