@@ -35,8 +35,10 @@ export class NewItemPage implements OnInit {
 				const { result, error } = await this.itemSvc.addItem({ ...newItem })
 				if (result.ok) {
 					console.log("Item has been added");
+					await this.alertSvc.messageAlert({ header: 'success!', message: 'Item has been added!' });
 					await this.modalCtrl.dismiss();
 				} else {
+					await this.alertSvc.messageAlert({ header: 'failed', message: 'Something went wrong!\n Please contact admin!' })
 					console.error("Document creation failed: ", result);
 					console.error("Error Code: ", error);
 				}
