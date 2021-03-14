@@ -1,7 +1,7 @@
 import { NewItemPage } from 'src/app/shared/components/modals/new-item/new-item.page';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
@@ -13,7 +13,8 @@ import { NewItemPageRoutingModule } from './new-item-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    NewItemPageRoutingModule
+    NewItemPageRoutingModule,
+    ReactiveFormsModule
   ],
   declarations: [NewItemPage],
   exports: [NewItemPage]
