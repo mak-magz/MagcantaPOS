@@ -9,15 +9,15 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./core/pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    loadChildren: () => import('./core/pages/dashboard/dashboard.module').then(m => m.DashboardPageModule)
   },
   {
     path: 'sales',
-    loadChildren: () => import('./core/pages/sales/sales.module').then( m => m.SalesPageModule)
+    loadChildren: () => import('./core/pages/sales/sales.module').then(m => m.SalesPageModule)
   },
   {
     path: 'inventory',
-    loadChildren: () => import('./core/pages/inventory/inventory.module').then( m => m.InventoryPageModule)
+    loadChildren: () => import('./core/pages/inventory/inventory.module').then(m => m.InventoryPageModule)
   }
 ];
 
@@ -27,4 +27,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
