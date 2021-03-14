@@ -20,6 +20,12 @@ export class FunctionButtonsPage implements OnInit {
     const modal = await this.modalCtrl.create({ component: NewItemPage });
 
     await modal.present();
+
+    const { data: newItem } = await modal.onDidDismiss();
+
+    if (newItem) {
+      console.log(newItem)
+    }
   }
 
 }
