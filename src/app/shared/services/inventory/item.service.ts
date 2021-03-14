@@ -2,8 +2,12 @@ import { Item } from './../../models/Item';
 import { Injectable } from '@angular/core';
 
 import PouchDB from 'pouchdb';
+import findPlugin from "pouchdb-find";
+PouchDB.plugin(findPlugin);
+
 import { BehaviorSubject } from 'rxjs';
 import { DatabaseService } from 'src/app/core/services/database/database.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -83,7 +87,24 @@ export class ItemService {
         error: error,
       };
     }
+  }
 
+  async searchItem(barcode: number) {
+    await this.itemDB.createIndex({
+      index: { fields: ["barcode"] },
+    });
+
+    try {
+      return {
+        result: await this.itemDB.find({
+          selector: { barcode: barcode },
+        }),
+      };
+    } catch (error) {
+      return {
+        error: error,
+      };
+    }
   }
 
   /* Getter functions */
