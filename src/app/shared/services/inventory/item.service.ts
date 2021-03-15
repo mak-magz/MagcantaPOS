@@ -119,6 +119,20 @@ export class ItemService {
 		}
 	}
 
+	async updateItem({ item }: { item: Item }): Promise<Result> {
+		const timeStamp: number = new Date().getTime();
+
+		try {
+			return {
+				result: await this.itemDB.put({ ...item, lastUpdatedOn: timeStamp })
+			}
+		} catch (err) {
+			return {
+				error: err
+			}
+		}
+	}
+
 	/* Getter functions */
 
 	get _allItems() {
