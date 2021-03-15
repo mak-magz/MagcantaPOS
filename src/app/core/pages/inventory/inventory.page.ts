@@ -45,7 +45,7 @@ export class InventoryPage implements OnInit {
 		}
 	}
 
-	async editItem(item: Item) {
+	async editItem(item: ItemDocument) {
 		const editModal = await this.modalCtrl.create({ component: EditItemPage, componentProps: { item: item } })
 
 		await editModal.present();

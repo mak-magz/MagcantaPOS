@@ -8,6 +8,7 @@ PouchDB.plugin(findPlugin);
 
 import { BehaviorSubject } from 'rxjs';
 import { DatabaseService } from 'src/app/core/services/database/database.service';
+import { ItemDocument } from '../../models/item-document';
 
 @Injectable({
 	providedIn: 'root',
@@ -119,7 +120,7 @@ export class ItemService {
 		}
 	}
 
-	async updateItem({ item }: { item: Item }): Promise<Result> {
+	async updateItem({ item }: { item: ItemDocument }): Promise<Result> {
 		const timeStamp: number = new Date().getTime();
 
 		try {
