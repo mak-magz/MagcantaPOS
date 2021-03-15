@@ -3,6 +3,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Item } from 'src/app/shared/models/Item';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
 import { map } from 'rxjs/operators'
+import { AlertService } from 'src/app/shared/services/alerts/alert.service';
 @Component({
 	selector: 'app-inventory',
 	templateUrl: './inventory.page.html',
@@ -22,14 +23,17 @@ export class InventoryPage implements OnInit {
 		"op",
 	];
 
-	constructor(private itemSvc: ItemService) { }
+	constructor(private itemSvc: ItemService, private alertService: AlertService) { }
 
 	ngOnInit() {
 		this.dataSource = this.itemSvc._allItems.pipe(map(data => { return data }))
 	}
 
 	async deleteItem(docID: string, docRev: string): Promise<void> {
-		const { result, error } = await this.itemSvc.deleteItem({ _id: docID, _rev: docRev })
+		const confirm: boolean = await this.alertService.confirmAlert('Delete this item?')
+		if (confirm) {
+			const { result, error } = await this.itemSvc.deleteItem({ _id: docID, _rev: docRev })
+		}
 	}
 
 	/* Getters */
