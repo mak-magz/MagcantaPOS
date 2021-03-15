@@ -107,7 +107,17 @@ export class ItemService {
 		}
 	}
 
-
+	async deleteItem({ _id, _rev }: { _id: string, _rev: string }): Promise<Result> {
+		try {
+			return {
+				result: await this.itemDB.remove({ _id, _rev })
+			}
+		} catch (error) {
+			return {
+				error
+			}
+		}
+	}
 
 	/* Getter functions */
 

@@ -28,7 +28,9 @@ export class InventoryPage implements OnInit {
 		this.dataSource = this.itemSvc._allItems.pipe(map(data => { return data }))
 	}
 
-
+	async deleteItem(docID: string, docRev: string): Promise<void> {
+		const { result, error } = await this.itemSvc.deleteItem({ _id: docID, _rev: docRev })
+	}
 
 	/* Getters */
 
