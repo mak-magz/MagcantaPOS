@@ -1,3 +1,4 @@
+import { Result } from './../../models/result';
 import { Item } from './../../models/Item';
 import { Injectable } from '@angular/core';
 
@@ -7,7 +8,6 @@ PouchDB.plugin(findPlugin);
 
 import { BehaviorSubject } from 'rxjs';
 import { DatabaseService } from 'src/app/core/services/database/database.service';
-
 
 @Injectable({
 	providedIn: 'root',
@@ -69,7 +69,7 @@ export class ItemService {
 		});
 	}
 
-	async addItem(itemData: Item) {
+	async addItem(itemData: Item): Promise<Result> {
 		const timesStamp = new Date().getTime();
 		const id = `${timesStamp}-${Math.floor(Math.random() * 10000)}-${Math.floor(
 			Math.random() * 1000000000
@@ -106,6 +106,8 @@ export class ItemService {
 			};
 		}
 	}
+
+
 
 	/* Getter functions */
 
