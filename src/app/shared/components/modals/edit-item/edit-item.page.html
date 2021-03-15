@@ -1,9 +1,44 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>edit-item</ion-title>
-  </ion-toolbar>
+	<ion-toolbar>
+		<ion-title>EDIT ITEM</ion-title>
+	</ion-toolbar>
 </ion-header>
 
 <ion-content>
+	<form [formGroup]="itemForm" (ngSubmit)="saveEdit(itemForm.value)">
+		<ion-item>
+			<ion-label position="floating">Barcode <ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input formControlName="barcode" type="number"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="floating">Name <ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input formControlName="name" type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="floating">Price <ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input required formControlName="price" type="number"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="floating">Quantity <ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input required formControlName="quantity" type="number"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label position="floating">Unit <ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input required formControlName="unit" type="text"></ion-input>
+		</ion-item>
 
+		<ion-item>
+			<ion-label position="floating">Discount <ion-text color="danger">*</ion-text>
+			</ion-label>
+			<ion-input required formControlName="discount" type="text"></ion-input>
+		</ion-item>
+		<ion-button block color="primary" type="submit" [disabled]="itemForm.pristine || itemForm.invalid">
+			SAVE
+		</ion-button>
+	</form>
 </ion-content>

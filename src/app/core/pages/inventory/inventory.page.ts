@@ -4,6 +4,8 @@ import { Item } from 'src/app/shared/models/Item';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
 import { map } from 'rxjs/operators'
 import { AlertService } from 'src/app/shared/services/alerts/alert.service';
+import { ModalController } from '@ionic/angular';
+import { EditItemPage } from 'src/app/shared/components/modals/edit-item/edit-item.page';
 @Component({
 	selector: 'app-inventory',
 	templateUrl: './inventory.page.html',
@@ -23,7 +25,7 @@ export class InventoryPage implements OnInit {
 		"op",
 	];
 
-	constructor(private itemSvc: ItemService, private alertService: AlertService) { }
+	constructor(private itemSvc: ItemService, private alertService: AlertService, private modalCtrl: ModalController) { }
 
 	ngOnInit() {
 		this.dataSource = this.itemSvc._allItems.pipe(map(data => { return data }))
@@ -40,6 +42,12 @@ export class InventoryPage implements OnInit {
 				await this.alertService.messageAlert({ header: 'failed!', message: 'An error occured while trying to delete the item.' })
 			}
 		}
+	}
+
+	async editItem(item: Item) {
+		const editModal = await this.modalCtrl.create({ component: EditItemPage, componentProps: { item: item } })
+
+		await editModal.present();
 	}
 
 	/* Getters */
