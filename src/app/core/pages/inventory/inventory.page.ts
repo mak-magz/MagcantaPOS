@@ -33,6 +33,12 @@ export class InventoryPage implements OnInit {
 		const confirm: boolean = await this.alertService.confirmAlert('Delete this item?')
 		if (confirm) {
 			const { result, error } = await this.itemSvc.deleteItem({ _id: docID, _rev: docRev })
+
+			if (!error) {
+				await this.alertService.messageAlert({ header: 'success!', message: 'Item has been deleted!' })
+			} else {
+				await this.alertService.messageAlert({ header: 'failed!', message: 'An error occured while trying to delete the item.' })
+			}
 		}
 	}
 
