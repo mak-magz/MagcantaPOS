@@ -25,14 +25,10 @@ export class InventoryPage implements OnInit {
 	constructor(private itemSvc: ItemService) { }
 
 	ngOnInit() {
-		this.itemDataSub = this.itemSvc._allItems.subscribe((data) => {
-			if (data) {
-				console.log('item list: ', data);
-			}
-		});
-
 		this.dataSource = this.itemSvc._allItems.pipe(map(data => { return data }))
 	}
+
+
 
 	/* Getters */
 
