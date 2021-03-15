@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators'
 import { AlertService } from 'src/app/shared/services/alerts/alert.service';
 import { ModalController } from '@ionic/angular';
 import { EditItemPage } from 'src/app/shared/components/modals/edit-item/edit-item.page';
+import { ItemDocument } from 'src/app/shared/models/item-document';
 @Component({
 	selector: 'app-inventory',
 	templateUrl: './inventory.page.html',
@@ -14,7 +15,7 @@ import { EditItemPage } from 'src/app/shared/components/modals/edit-item/edit-it
 export class InventoryPage implements OnInit {
 
 	itemDataSub: Subscription;
-	private dataSource: Observable<Item[]>;
+	private dataSource: Observable<ItemDocument[]>;
 	private displayedColumns: string[] = [
 		"barcode",
 		"name",
