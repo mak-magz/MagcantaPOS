@@ -1,4 +1,9 @@
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
+import { ItemService } from 'src/app/shared/services/inventory/item.service';
+import { ItemDocument } from 'src/app/shared/models/item-document';
+import { SalesService } from '../../services/sales/sales.service';
 
 @Component({
 	selector: 'app-sales',
@@ -24,10 +29,31 @@ export class SalesPage implements OnInit {
 	};
 
 	displayedFooter: string[] = ["sub", "total"];
-	dataSource: any;
-	constructor() { }
+	dataSource: Observable<ItemDocument[]>
+	constructor(
+		private itemService: ItemService,
+		private salesService: SalesService
+	) { }
 
 	ngOnInit() {
+		this.dataSource = this.salesService._allScannedItems.pipe(map(data => { return data }))
+	}
+
+	async scanItem() {
+		const id = this.randomID();
+		console.log(id)
+		const { result, error } = await this.itemService.searchItem(id);
+
+		if (result.docs.length > 0) {
+			const item = result.docs[0];
+			this.salesService.addItem(item)
+		} else {
+			console.log("item not found")
+		}
+	}
+
+	randomID() {
+		return Math.floor(Math.random() * 11);
 	}
 
 }
