@@ -24,29 +24,30 @@ export class SalesService {
 		const itemIndex = this.checkItem(item.barcode)
 		const { quantity, lastUpdatedOn, ...newItem } = item;
 
-		console.log("qty sold: ", quantitySold)
+		const saleItem: SaleItem = this.newSaleItem({ newItem, quantity: quantitySold });
+
+		this.updateScannedItem(itemIndex, saleItem);
+	}
+
+	private updateScannedItem(itemIndex: number, saleItem: SaleItem) {
 		if (itemIndex < 0) {
 			// Item does not exist in the array
 			// push the item
-			const saleItem: SaleItem = this.newSaleItem(newItem, quantitySold);
-			this.scannedItems$.next([{ ...saleItem }, ...this.scannedItems$.value])
+			this.scannedItems$.next([{ ...saleItem }, ...this.scannedItems$.value]);
 		} else {
 			// Item exists
 			// update the quantity
 			// then update the datastore
-			const saleItem: SaleItem = this.newSaleItem(newItem, quantitySold);
-			this.updateScannedItem({ saleItem, index: itemIndex });
+			const scannedItems: SaleItem[] = [...this.scannedItems$.value];
+			scannedItems[itemIndex].quantitySold += saleItem.quantitySold;
+			scannedItems[itemIndex].subTotal += saleItem.subTotal;
+			scannedItems[itemIndex].salesTotal += saleItem.salesTotal;
+
+			this.scannedItems$.next([...scannedItems])
 		}
 	}
-	updateScannedItem({ saleItem, index }: { saleItem: SaleItem; index: number; }) {
-		const scannedItems: SaleItem[] = [...this.scannedItems$.value];
-		scannedItems[index].quantitySold += saleItem.quantitySold;
-		scannedItems[index].subTotal += saleItem.subTotal;
-		scannedItems[index].salesTotal += saleItem.salesTotal;
 
-		this.scannedItems$.next([...scannedItems])
-	}
-	newSaleItem(newItem: { _id: string; _rev: string; barcode: number; name: string; price: number; unit: string; discount: number; }, quantity: number): SaleItem {
+	private newSaleItem({ newItem, quantity }: { newItem: { _id: string; _rev: string; barcode: number; name: string; price: number; unit: string; discount: number; }; quantity: number; }): SaleItem {
 		let saleItem = {} as SaleItem;
 
 		saleItem.discount = newItem.discount;
