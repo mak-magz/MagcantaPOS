@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { SalesPageRoutingModule } from './sales-routing.module';
 
 import { SalesPage } from './sales.page';
+import { SalesComponentModule } from './components/sales-component.module';
 
 @NgModule({
 	imports: [
@@ -15,7 +16,7 @@ import { SalesPage } from './sales.page';
 		FormsModule,
 		IonicModule,
 		SalesPageRoutingModule,
-		MatTableModule
+		SalesComponentModule
 	],
 	declarations: [SalesPage]
 })
