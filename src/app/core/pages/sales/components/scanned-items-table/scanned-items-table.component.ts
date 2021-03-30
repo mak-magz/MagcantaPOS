@@ -30,13 +30,20 @@ export class ScannedItemsTableComponent implements OnInit {
 
 	displayedFooter: string[] = ["sub", "total"];
 	dataSource: Observable<ItemDocument[]>
+	transaction: Observable<any>;
 	constructor(
 		private itemService: ItemService,
 		private salesService: SalesService
 	) { }
 
 	ngOnInit() {
-		this.dataSource = this.salesService._allScannedItems.pipe(map(data => { return data }))
+		this.dataSource = this.salesService._allScannedItems.pipe(map(data => {
+			console.log("data", data)
+			this.salesService.processTransaction(data);
+			return data
+		}))
+
+		this.transaction = this.salesService._transaction;
 	}
 
 	async scanItem() {

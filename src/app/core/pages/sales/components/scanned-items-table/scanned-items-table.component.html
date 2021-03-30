@@ -50,7 +50,7 @@
 					<ion-grid>
 						<ion-row>
 							<ion-col size="6">SUB TOTAL</ion-col>
-							<ion-col size="6"> SUBTOTAL </ion-col>
+							<ion-col size="6"> {{ (transaction | async).subtotal }} </ion-col>
 						</ion-row>
 						<ion-row>
 							<ion-col size="6">DISCOUNT</ion-col>
@@ -62,7 +62,7 @@
 						</ion-row>
 						<ion-row>
 							<ion-col size="6">TOAL ITEMS</ion-col>
-							<ion-col size="6">TOTAL</ion-col>
+							<ion-col size="6">{{ (transaction | async).totalItems }}</ion-col>
 						</ion-row>
 					</ion-grid>
 				</section>
@@ -76,7 +76,7 @@
 						<span> TOTAL AMOUNT </span>
 					</div>
 					<div class="num">
-						<ion-text color="primary"> Php. 50 </ion-text>
+						<ion-text color="primary"> Php. {{ (transaction | async).totalAmount }}</ion-text>
 					</div>
 				</section>
 			</td>

@@ -8,11 +8,15 @@ import { Injectable } from '@angular/core';
 export class SalesService {
 
 	private scannedItems$ = new BehaviorSubject([]);
-
+	private transaction$ = new BehaviorSubject({});
 	constructor() { }
 
 	get _allScannedItems(): Observable<ItemDocument[]> {
 		return this.scannedItems$.asObservable()
+	}
+
+	get _transaction(): Observable<any> {
+		return this.transaction$.asObservable();
 	}
 
 	async addItem(item: ItemDocument) {
@@ -44,5 +48,27 @@ export class SalesService {
 			console.log('Item does not exist');
 			return -1;
 		}
+	}
+
+	processTransaction(items: ItemDocument[]) {
+		let transaction = {
+			date: '',
+			subtotal: 0,
+			totalDiscount: 0,
+			totalTax: 0,
+			totalItems: 0,
+			totalAmount: 0,
+			items: []
+		}
+
+		items.map(item => {
+			transaction.subtotal += item.price * item.quantity;
+			transaction.totalDiscount += item.discount;
+			transaction.totalItems += item.quantity;
+			transaction.totalAmount = transaction.subtotal - transaction.totalTax;
+		})
+
+		this.transaction$.next(transaction)
+		console.log(transaction)
 	}
 }
