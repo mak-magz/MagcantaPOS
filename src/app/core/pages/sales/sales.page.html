@@ -12,5 +12,93 @@
 			</ion-card-content>
 		</ion-card>
 	</section>
+	<section class="item-table">
+		<ion-card class="table-container">
+			<table mat-table [dataSource]="dataSource">
+				<!--- Note that these columns can be defined in any order.
+	              The actual rendered columns are set as a property on the row definition" -->
+
+				<!-- Position Column -->
+				<ng-container matColumnDef="item">
+					<th mat-header-cell *matHeaderCellDef>item</th>
+					<td mat-cell *matCellDef="let element">{{element.name}}</td>
+				</ng-container>
+
+				<!-- Name Column -->
+				<ng-container matColumnDef="quantity">
+					<th mat-header-cell *matHeaderCellDef>quantity</th>
+					<td mat-cell *matCellDef="let element">{{element.quantity}}</td>
+				</ng-container>
+
+				<!-- Weight Column -->
+				<ng-container matColumnDef="unit">
+					<th mat-header-cell *matHeaderCellDef>unit</th>
+					<td mat-cell *matCellDef="let element">{{element.unit}}</td>
+				</ng-container>
+
+				<!-- Symbol Column -->
+				<ng-container matColumnDef="price">
+					<th mat-header-cell *matHeaderCellDef>price</th>
+					<td mat-cell *matCellDef="let element">{{element.price}}</td>
+				</ng-container>
+
+				<!-- Symbol Column -->
+				<ng-container matColumnDef="discount">
+					<th mat-header-cell *matHeaderCellDef>discount</th>
+					<td mat-cell *matCellDef="let element">{{element.discount}}</td>
+				</ng-container>
+
+				<!-- Symbol Column -->
+				<ng-container matColumnDef="total">
+					<th mat-header-cell *matHeaderCellDef>total</th>
+					<td mat-cell *matCellDef="let element">
+						{{element.price * element.quantity}}
+					</td>
+				</ng-container>
+
+				<ng-container matColumnDef="disclaimer">
+					<td mat-footer-cell *matFooterCellDef colspan="2">
+						<section class="total-info">
+							<ion-grid>
+								<ion-row>
+									<ion-col size="6">SUB TOTAL</ion-col>
+									<ion-col size="6"> SUBTOTAL </ion-col>
+								</ion-row>
+								<ion-row>
+									<ion-col size="6">DISCOUNT</ion-col>
+									<ion-col size="6">asdf</ion-col>
+								</ion-row>
+								<ion-row>
+									<ion-col size="6">TAX</ion-col>
+									<ion-col size="6">asdf</ion-col>
+								</ion-row>
+								<ion-row>
+									<ion-col size="6">TOAL ITEMS</ion-col>
+									<ion-col size="6">TOTAL</ion-col>
+								</ion-row>
+							</ion-grid>
+						</section>
+					</td>
+				</ng-container>
+
+				<ng-container matColumnDef="dis">
+					<td mat-footer-cell *matFooterCellDef colspan="4">
+						<section class="total">
+							<div>
+								<span> TOTAL AMOUNT </span>
+							</div>
+							<div class="num">
+								<ion-text color="primary"> Php. 50 </ion-text>
+							</div>
+						</section>
+					</td>
+				</ng-container>
+
+				<tr mat-header-row *matHeaderRowDef="displayedColumns;  sticky: true"></tr>
+				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+				<tr mat-footer-row *matFooterRowDef="['disclaimer', 'dis']; sticky: true"></tr>
+			</table>
+		</ion-card>
+	</section>
   </div>
 </ion-content>
