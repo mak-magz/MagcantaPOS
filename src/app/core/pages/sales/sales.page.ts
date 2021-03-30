@@ -11,49 +11,12 @@ import { SalesService } from '../../services/sales/sales.service';
 	styleUrls: ['./sales.page.scss'],
 })
 export class SalesPage implements OnInit {
-	displayedColumns: string[] = [
-		"item",
-		"quantity",
-		"unit",
-		"price",
-		"discount",
-		"total",
-	];
-
-	sales = {
-		subTotal: 0,
-		discount: 0,
-		tax: 0,
-		totalItems: 0,
-		netTotal: 0,
-	};
-
-	displayedFooter: string[] = ["sub", "total"];
-	dataSource: Observable<ItemDocument[]>
 	constructor(
-		private itemService: ItemService,
-		private salesService: SalesService
 	) { }
 
 	ngOnInit() {
-		this.dataSource = this.salesService._allScannedItems.pipe(map(data => { return data }))
 	}
 
-	async scanItem() {
-		const id = this.randomID();
-		console.log(id)
-		const { result, error } = await this.itemService.searchItem(id);
 
-		if (result.docs.length > 0) {
-			const item = result.docs[0];
-			this.salesService.addItem(item)
-		} else {
-			console.log("item not found")
-		}
-	}
-
-	randomID() {
-		return Math.floor(Math.random() * 11);
-	}
 
 }
