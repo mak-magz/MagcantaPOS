@@ -1,6 +1,30 @@
 ion-content {
-  --padding-start: 15px;
-  --padding-end: 15px;
-  --padding-top: 15px;
-  --padding-bottom: 15px;
+	--padding-start: 15px;
+	--padding-end: 15px;
+	--padding-top: 15px;
+	--padding-bottom: 15px;
+}
+
+#scanned-item {
+	ion-card {
+		display: flex;
+		flex-direction: row;
+
+		ion-card-header {
+			width: 50%;
+		}
+
+		ion-card-content {
+			padding-top: 16px;
+			width: 50%;
+
+			div {
+				display: flex;
+				height: 100%;
+				justify-content: center;
+				align-items: center;
+				font-size: 40px;
+			}
+		}
+	}
 }
