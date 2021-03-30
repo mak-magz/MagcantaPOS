@@ -1,6 +1,7 @@
 import { ItemDocument } from 'src/app/shared/models/item-document';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { SaleItem } from 'src/app/shared/models/sale-item';
 
 @Injectable({
 	providedIn: 'root'
@@ -11,7 +12,7 @@ export class SalesService {
 	private transaction$ = new BehaviorSubject({});
 	constructor() { }
 
-	get _allScannedItems(): Observable<ItemDocument[]> {
+	get _allScannedItems(): Observable<SaleItem[]> {
 		return this.scannedItems$.asObservable()
 	}
 
@@ -19,22 +20,42 @@ export class SalesService {
 		return this.transaction$.asObservable();
 	}
 
-	async addItem(item: ItemDocument) {
+	addItem(item: ItemDocument, quantitySold = 1) {
 		const itemIndex = this.checkItem(item.barcode)
+		const { quantity, lastUpdatedOn, ...newItem } = item;
 
+		console.log("qty sold: ", quantitySold)
 		if (itemIndex < 0) {
 			// Item does not exist in the array
 			// push the item
-			this.scannedItems$.next([item, ...this.scannedItems$.value])
+			const saleItem: SaleItem = this.newSaleItem(newItem, quantitySold);
+			this.scannedItems$.next([{ ...saleItem }, ...this.scannedItems$.value])
 		} else {
 			// Item exists
 			// update the quantity
 			// then update the datastore
-			const scannedItems = [...this.scannedItems$.value];
-			scannedItems[itemIndex]["quantity"] += item.quantity;
-
-			this.scannedItems$.next([...scannedItems])
+			const saleItem: SaleItem = this.newSaleItem(newItem, quantitySold);
+			this.updateScannedItem({ saleItem, index: itemIndex });
 		}
+	}
+	updateScannedItem({ saleItem, index }: { saleItem: SaleItem; index: number; }) {
+		const scannedItems: SaleItem[] = [...this.scannedItems$.value];
+		scannedItems[index].quantitySold += saleItem.quantitySold;
+		scannedItems[index].subTotal += saleItem.subTotal;
+		scannedItems[index].salesTotal += saleItem.salesTotal;
+
+		this.scannedItems$.next([...scannedItems])
+	}
+	newSaleItem(newItem: { _id: string; _rev: string; barcode: number; name: string; price: number; unit: string; discount: number; }, quantity: number): SaleItem {
+		let saleItem = {} as SaleItem;
+
+		saleItem.discount = newItem.discount;
+		saleItem.quantitySold = quantity;
+		saleItem.subTotal = newItem.price * saleItem.quantitySold;
+		saleItem.salesTotal = saleItem.subTotal - (saleItem.discount * saleItem.quantitySold);
+		console.log("sale total: ", saleItem.salesTotal)
+
+		return { ...saleItem, ...newItem }
 	}
 
 	checkItem(sku: number) {
@@ -50,7 +71,7 @@ export class SalesService {
 		}
 	}
 
-	processTransaction(items: ItemDocument[]) {
+	processTransaction(items: SaleItem[]) {
 		let transaction = {
 			date: '',
 			subtotal: 0,
@@ -62,10 +83,10 @@ export class SalesService {
 		}
 
 		items.map(item => {
-			transaction.subtotal += item.price * item.quantity;
-			transaction.totalDiscount += item.discount;
-			transaction.totalItems += item.quantity;
-			transaction.totalAmount = transaction.subtotal - transaction.totalTax;
+			transaction.subtotal += item.subTotal;
+			transaction.totalDiscount += item.discount * item.quantitySold;
+			transaction.totalItems += item.quantitySold;
+			transaction.totalAmount += item.salesTotal;
 		})
 
 		this.transaction$.next(transaction)

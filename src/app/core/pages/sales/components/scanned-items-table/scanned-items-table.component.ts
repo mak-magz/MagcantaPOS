@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SalesService } from 'src/app/core/services/sales/sales.service';
 import { ItemDocument } from 'src/app/shared/models/item-document';
+import { SaleItem } from 'src/app/shared/models/sale-item';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
 
 @Component({
@@ -29,7 +30,7 @@ export class ScannedItemsTableComponent implements OnInit {
 	};
 
 	displayedFooter: string[] = ["sub", "total"];
-	dataSource: Observable<ItemDocument[]>
+	dataSource: Observable<SaleItem[]>
 	transaction: Observable<any>;
 	constructor(
 		private itemService: ItemService,
