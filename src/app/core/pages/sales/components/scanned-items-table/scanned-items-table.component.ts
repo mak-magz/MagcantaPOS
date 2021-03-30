@@ -46,7 +46,7 @@ export class ScannedItemsTableComponent implements OnInit {
 
 		if (result.docs.length > 0) {
 			const item = result.docs[0];
-			this.salesService.addItem(item)
+			this.salesService.addItem(item as ItemDocument)
 		} else {
 			console.log("item not found")
 		}

@@ -15,8 +15,34 @@ export class SalesService {
 		return this.scannedItems$.asObservable()
 	}
 
-	addItem(item: any) {
-		this.scannedItems$.next([item, ...this.scannedItems$.value])
-		console.log(this.scannedItems$.value)
+	async addItem(item: ItemDocument) {
+		const itemIndex = this.checkItem(item.barcode)
+
+		if (itemIndex < 0) {
+			// Item does not exist in the array
+			// push the item
+			this.scannedItems$.next([item, ...this.scannedItems$.value])
+		} else {
+			// Item exists
+			// update the quantity
+			// then update the datastore
+			const scannedItems = [...this.scannedItems$.value];
+			scannedItems[itemIndex]["quantity"] += item.quantity;
+
+			this.scannedItems$.next([...scannedItems])
+		}
+	}
+
+	checkItem(sku: number) {
+		console.log("sku: ", sku)
+		const items: ItemDocument[] = [...this.scannedItems$.value];
+		const item = items.find(item => item.barcode === sku);
+		if (item) {
+			console.log('Item exist: ', item);
+			return items.indexOf(item);
+		} else {
+			console.log('Item does not exist');
+			return -1;
+		}
 	}
 }
