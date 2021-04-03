@@ -1,7 +1,9 @@
+import { ISoldItem } from 'src/app/shared/models/sold-item.interface';
 import { IItemDocument } from 'src/app/shared/models/item-document.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ISoldItemDetails } from 'src/app/shared/models/sold-item.interface';
+import { SaleItem } from 'src/app/shared/classes/SaleItem';
+import { ISoldItemDetails } from 'src/app/shared/models/sold-item-detail.interface';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,7 +14,7 @@ export class SalesService {
 	private transaction$ = new BehaviorSubject({});
 	constructor() { }
 
-	get _allScannedItems(): Observable<ISoldItemDetails[]> {
+	get _allScannedItems(): Observable<ISoldItem[]> {
 		return this.scannedItems$.asObservable()
 	}
 
@@ -24,45 +26,47 @@ export class SalesService {
 		const itemIndex = this.checkItem(item.barcode)
 		const { quantity, lastUpdatedOn, ...newItem } = item;
 
-		const saleItem: ISoldItemDetails = this.newSaleItem({ newItem, quantity: quantitySold });
+		const saleItem: ISoldItem = new SaleItem(item, quantitySold);
 
 		this.updateScannedItem(itemIndex, saleItem);
 	}
 
-	private updateScannedItem(itemIndex: number, saleItem: ISoldItemDetails) {
+	private updateScannedItem(itemIndex: number, saleItem: ISoldItem) {
 		if (itemIndex < 0) {
 			// Item does not exist in the array
 			// push the item
-			this.scannedItems$.next([{ ...saleItem }, ...this.scannedItems$.value]);
+			this.scannedItems$.next([saleItem, ...this.scannedItems$.value]);
 		} else {
 			// Item exists
 			// update the quantity
 			// then update the datastore
-			const scannedItems: ISoldItemDetails[] = [...this.scannedItems$.value];
-			scannedItems[itemIndex].quantitySold += saleItem.quantitySold;
-			scannedItems[itemIndex].subTotal += saleItem.subTotal;
-			scannedItems[itemIndex].salesTotal += saleItem.salesTotal;
+			// const scannedItems: ISoldItemDetails[] = [...this.scannedItems$.value];
+			// scannedItems[itemIndex].quantitySold += saleItem.quantitySold;
+			// scannedItems[itemIndex].subTotal += saleItem.subTotal;
+			// scannedItems[itemIndex].salesTotal += saleItem.salesTotal;
 
-			this.scannedItems$.next([...scannedItems])
+			const scannedItems: ISoldItem[] = [...this.scannedItems$.value];
+			scannedItems[itemIndex].updateSale({ salesTotal: saleItem.soldItem.salesTotal, quantity: saleItem.soldItem.quantitySold, subTotal: saleItem.soldItem.subTotal });
+			this.scannedItems$.next(scannedItems)
 		}
 	}
 
-	private newSaleItem({ newItem, quantity }: { newItem: { _id: string; _rev: string; barcode: number; name: string; price: number; unit: string; discount: number; }; quantity: number; }): ISoldItemDetails {
-		let saleItem = {} as ISoldItemDetails;
+	// private newSaleItem({ newItem, quantity }: { newItem: { _id: string; _rev: string; barcode: number; name: string; price: number; unit: string; discount: number; }; quantity: number; }): ISoldItemDetails {
+	// 	let saleItem = {} as ISoldItemDetails;
 
-		saleItem.discount = newItem.discount;
-		saleItem.quantitySold = quantity;
-		saleItem.subTotal = newItem.price * saleItem.quantitySold;
-		saleItem.salesTotal = saleItem.subTotal - (saleItem.discount * saleItem.quantitySold);
-		console.log("sale total: ", saleItem.salesTotal)
+	// 	saleItem.discount = newItem.discount;
+	// 	saleItem.quantitySold = quantity;
+	// 	saleItem.subTotal = newItem.price * saleItem.quantitySold;
+	// 	saleItem.salesTotal = saleItem.subTotal - (saleItem.discount * saleItem.quantitySold);
+	// 	console.log("sale total: ", saleItem.salesTotal)
 
-		return { ...saleItem, ...newItem }
-	}
+	// 	return { ...saleItem, ...newItem }
+	// }
 
 	checkItem(sku: number) {
 		console.log("sku: ", sku)
-		const items: IItemDocument[] = [...this.scannedItems$.value];
-		const item = items.find(item => item.barcode === sku);
+		const items: ISoldItem[] = [...this.scannedItems$.value];
+		const item = items.find(item => item.soldItem.barcode === sku);
 		if (item) {
 			console.log('Item exist: ', item);
 			return items.indexOf(item);
@@ -72,7 +76,7 @@ export class SalesService {
 		}
 	}
 
-	processTransaction(items: ISoldItemDetails[]) {
+	processTransaction(items: ISoldItem[]) {
 		let transaction = {
 			date: '',
 			subtotal: 0,
@@ -84,10 +88,10 @@ export class SalesService {
 		}
 
 		items.map(item => {
-			transaction.subtotal += item.subTotal;
-			transaction.totalDiscount += item.discount * item.quantitySold;
-			transaction.totalItems += item.quantitySold;
-			transaction.totalAmount += item.salesTotal;
+			transaction.subtotal += item.soldItem.subTotal;
+			transaction.totalDiscount += item.soldItem.discount * item.soldItem.quantitySold;
+			transaction.totalItems += item.soldItem.quantitySold;
+			transaction.totalAmount += item.soldItem.salesTotal;
 		})
 
 		this.transaction$.next(transaction)

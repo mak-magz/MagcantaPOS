@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SalesService } from 'src/app/core/services/sales/sales.service';
 import { IItemDocument } from 'src/app/shared/models/item-document.interface';
-import { ISoldItemDetails } from 'src/app/shared/models/sold-item.interface';
+import { ISoldItem } from 'src/app/shared/models/sold-item.interface';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
 
 @Component({
@@ -30,7 +30,7 @@ export class ScannedItemsTableComponent implements OnInit {
 	};
 
 	displayedFooter: string[] = ["sub", "total"];
-	dataSource: Observable<ISoldItemDetails[]>
+	dataSource: Observable<ISoldItem[]>
 	transaction: Observable<any>;
 	constructor(
 		private itemService: ItemService,
@@ -39,7 +39,7 @@ export class ScannedItemsTableComponent implements OnInit {
 
 	ngOnInit() {
 		this.dataSource = this.salesService._allScannedItems.pipe(map(data => {
-			console.log("data", data)
+			console.warn("data", data)
 			this.salesService.processTransaction(data);
 			return data
 		}))
