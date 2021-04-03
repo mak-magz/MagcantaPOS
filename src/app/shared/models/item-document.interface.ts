@@ -1,4 +1,4 @@
-import { Item } from "./Item";
+import { Item } from "./Item.interface";
 
 export interface ItemDocument extends Item {
 	_id: string;

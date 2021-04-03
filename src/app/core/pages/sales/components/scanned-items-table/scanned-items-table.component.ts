@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SalesService } from 'src/app/core/services/sales/sales.service';
-import { ItemDocument } from 'src/app/shared/models/item-document';
-import { SaleItem } from 'src/app/shared/models/sale-item';
+import { ItemDocument } from 'src/app/shared/models/item-document.interface';
+import { SaleItem } from 'src/app/shared/models/sale-item.interface';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
 
 @Component({

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { ItemDocument } from 'src/app/shared/models/item-document';
+import { ItemDocument } from 'src/app/shared/models/item-document.interface';
 import { AlertService } from 'src/app/shared/services/alerts/alert.service';
 import { FormService } from 'src/app/shared/services/forms/form.service';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';

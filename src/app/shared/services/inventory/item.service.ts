@@ -1,5 +1,5 @@
-import { Result } from './../../models/result';
-import { Item } from './../../models/Item';
+import { Result } from '../../models/result.interface';
+import { Item } from '../../models/Item.interface';
 import { Injectable } from '@angular/core';
 
 import PouchDB from 'pouchdb';
@@ -8,7 +8,7 @@ PouchDB.plugin(findPlugin);
 
 import { BehaviorSubject } from 'rxjs';
 import { DatabaseService } from 'src/app/core/services/database/database.service';
-import { ItemDocument } from '../../models/item-document';
+import { ItemDocument } from '../../models/item-document.interface';
 
 @Injectable({
 	providedIn: 'root',

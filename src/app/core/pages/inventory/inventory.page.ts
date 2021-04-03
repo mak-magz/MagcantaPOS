@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Item } from 'src/app/shared/models/Item';
+import { Item } from 'src/app/shared/models/Item.interface';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
 import { map } from 'rxjs/operators'
 import { AlertService } from 'src/app/shared/services/alerts/alert.service';
 import { ModalController } from '@ionic/angular';
 import { EditItemPage } from 'src/app/shared/components/modals/edit-item/edit-item.page';
-import { ItemDocument } from 'src/app/shared/models/item-document';
+import { ItemDocument } from 'src/app/shared/models/item-document.interface';
 @Component({
 	selector: 'app-inventory',
 	templateUrl: './inventory.page.html',
