@@ -1,8 +1,8 @@
 import { IItem } from 'src/app/shared/models/Item.interface';
-import { ISoldItemDetails } from 'src/app/shared/models/sale-item.interface';
-export class SaleItem implements ISoldItemDetails {
+import { ISoldItemDetails } from 'src/app/shared/models/sold-item.interface';
+export class SaleItem {
 
-	salesDetail = {} as ISoldItemDetails;
+	soldItem = {} as ISoldItemDetails;
 	// barcode = 0;
 	// name = '';
 	// price = 0;

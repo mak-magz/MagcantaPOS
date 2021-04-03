@@ -1,7 +1,7 @@
 import { IItemDocument } from 'src/app/shared/models/item-document.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ISoldItemDetails } from 'src/app/shared/models/sale-item.interface';
+import { ISoldItemDetails } from 'src/app/shared/models/sold-item.interface';
 
 @Injectable({
 	providedIn: 'root'
