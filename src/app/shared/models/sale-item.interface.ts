@@ -1,4 +1,4 @@
-export interface SaleItem {
+export interface ISaleItem {
 	barcode: number;
 	name: string;
 	price: number;

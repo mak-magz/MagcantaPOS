@@ -1,5 +1,5 @@
-import { Result } from '../../models/result.interface';
-import { Item } from '../../models/Item.interface';
+import { IResult } from '../../models/result.interface';
+import { IItem } from '../../models/Item.interface';
 import { Injectable } from '@angular/core';
 
 import PouchDB from 'pouchdb';
@@ -8,7 +8,7 @@ PouchDB.plugin(findPlugin);
 
 import { BehaviorSubject } from 'rxjs';
 import { DatabaseService } from 'src/app/core/services/database/database.service';
-import { ItemDocument } from '../../models/item-document.interface';
+import { IItemDocument } from '../../models/item-document.interface';
 
 @Injectable({
 	providedIn: 'root',
@@ -70,7 +70,7 @@ export class ItemService {
 		});
 	}
 
-	async addItem(itemData: Item): Promise<Result> {
+	async addItem(itemData: IItem): Promise<IResult> {
 		const timesStamp = new Date().getTime();
 		const id = `${timesStamp}-${Math.floor(Math.random() * 10000)}-${Math.floor(
 			Math.random() * 1000000000
@@ -108,7 +108,7 @@ export class ItemService {
 		}
 	}
 
-	async deleteItem({ _id, _rev }: { _id: string, _rev: string }): Promise<Result> {
+	async deleteItem({ _id, _rev }: { _id: string, _rev: string }): Promise<IResult> {
 		try {
 			return {
 				result: await this.itemDB.remove({ _id, _rev })
@@ -120,7 +120,7 @@ export class ItemService {
 		}
 	}
 
-	async updateItem({ item }: { item: ItemDocument }): Promise<Result> {
+	async updateItem({ item }: { item: IItemDocument }): Promise<IResult> {
 		const timeStamp: number = new Date().getTime();
 
 		try {

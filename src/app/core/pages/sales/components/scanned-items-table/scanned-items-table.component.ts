@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SalesService } from 'src/app/core/services/sales/sales.service';
-import { ItemDocument } from 'src/app/shared/models/item-document.interface';
-import { SaleItem } from 'src/app/shared/models/sale-item.interface';
+import { IItemDocument } from 'src/app/shared/models/item-document.interface';
+import { ISaleItem } from 'src/app/shared/models/sale-item.interface';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
 
 @Component({
@@ -30,7 +30,7 @@ export class ScannedItemsTableComponent implements OnInit {
 	};
 
 	displayedFooter: string[] = ["sub", "total"];
-	dataSource: Observable<SaleItem[]>
+	dataSource: Observable<ISaleItem[]>
 	transaction: Observable<any>;
 	constructor(
 		private itemService: ItemService,
@@ -54,7 +54,7 @@ export class ScannedItemsTableComponent implements OnInit {
 
 		if (result.docs.length > 0) {
 			const item = result.docs[0];
-			this.salesService.addItem(item as ItemDocument)
+			this.salesService.addItem(item as IItemDocument)
 		} else {
 			console.log("item not found")
 		}

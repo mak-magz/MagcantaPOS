@@ -1,4 +1,4 @@
-export interface Item {
+export interface IItem {
 	barcode: number;
 	name: string;
 	price: number;

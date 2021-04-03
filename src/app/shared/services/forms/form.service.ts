@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { Item } from '../../models/Item.interface';
+import { IItem } from '../../models/Item.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class FormService {
     private formBuilder: FormBuilder
   ) { }
 
-  itemForm(item?: Item): FormGroup {
+  itemForm(item?: IItem): FormGroup {
     return this.formBuilder.group({
       barcode: new FormControl(item ? item.barcode : "", Validators.compose([Validators.required])),
       name: new FormControl(item ? item.name : "", Validators.compose([Validators.required])),

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { ItemDocument } from 'src/app/shared/models/item-document.interface';
+import { IItemDocument } from 'src/app/shared/models/item-document.interface';
 import { AlertService } from 'src/app/shared/services/alerts/alert.service';
 import { FormService } from 'src/app/shared/services/forms/form.service';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
@@ -13,7 +13,7 @@ import { ItemService } from 'src/app/shared/services/inventory/item.service';
 })
 export class EditItemPage implements OnInit {
 
-	@Input() item: ItemDocument;
+	@Input() item: IItemDocument;
 
 	itemForm: FormGroup;
 
@@ -28,7 +28,7 @@ export class EditItemPage implements OnInit {
 		console.log(this.item)
 	}
 
-	async saveEdit(updatedItem: ItemDocument) {
+	async saveEdit(updatedItem: IItemDocument) {
 		const alert = await this.alertService.confirmAlert("Update document?");
 		updatedItem._id = this.item._id;
 		updatedItem._rev = this.item._rev;

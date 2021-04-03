@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Item } from 'src/app/shared/models/Item.interface';
+import { IItem } from 'src/app/shared/models/Item.interface';
 import { ItemService } from 'src/app/shared/services/inventory/item.service';
 import { map } from 'rxjs/operators'
 import { AlertService } from 'src/app/shared/services/alerts/alert.service';
 import { ModalController } from '@ionic/angular';
 import { EditItemPage } from 'src/app/shared/components/modals/edit-item/edit-item.page';
-import { ItemDocument } from 'src/app/shared/models/item-document.interface';
+import { IItemDocument } from 'src/app/shared/models/item-document.interface';
 @Component({
 	selector: 'app-inventory',
 	templateUrl: './inventory.page.html',
@@ -15,7 +15,7 @@ import { ItemDocument } from 'src/app/shared/models/item-document.interface';
 export class InventoryPage implements OnInit {
 
 	itemDataSub: Subscription;
-	private dataSource: Observable<ItemDocument[]>;
+	private dataSource: Observable<IItemDocument[]>;
 	private displayedColumns: string[] = [
 		"barcode",
 		"name",
@@ -45,7 +45,7 @@ export class InventoryPage implements OnInit {
 		}
 	}
 
-	async editItem(item: ItemDocument) {
+	async editItem(item: IItemDocument) {
 		const editModal = await this.modalCtrl.create({ component: EditItemPage, componentProps: { item: item } })
 
 		await editModal.present();
@@ -57,7 +57,7 @@ export class InventoryPage implements OnInit {
 		return this.displayedColumns;
 	}
 
-	get _dataSource(): Observable<Item[]> {
+	get _dataSource(): Observable<IItem[]> {
 		return this.dataSource;
 	}
 }
