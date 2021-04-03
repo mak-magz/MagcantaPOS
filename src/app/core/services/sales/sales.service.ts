@@ -1,7 +1,7 @@
 import { IItemDocument } from 'src/app/shared/models/item-document.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ISaleItem } from 'src/app/shared/models/sale-item.interface';
+import { ISoldItemDetails } from 'src/app/shared/models/sale-item.interface';
 
 @Injectable({
 	providedIn: 'root'
@@ -12,7 +12,7 @@ export class SalesService {
 	private transaction$ = new BehaviorSubject({});
 	constructor() { }
 
-	get _allScannedItems(): Observable<ISaleItem[]> {
+	get _allScannedItems(): Observable<ISoldItemDetails[]> {
 		return this.scannedItems$.asObservable()
 	}
 
@@ -24,12 +24,12 @@ export class SalesService {
 		const itemIndex = this.checkItem(item.barcode)
 		const { quantity, lastUpdatedOn, ...newItem } = item;
 
-		const saleItem: ISaleItem = this.newSaleItem({ newItem, quantity: quantitySold });
+		const saleItem: ISoldItemDetails = this.newSaleItem({ newItem, quantity: quantitySold });
 
 		this.updateScannedItem(itemIndex, saleItem);
 	}
 
-	private updateScannedItem(itemIndex: number, saleItem: ISaleItem) {
+	private updateScannedItem(itemIndex: number, saleItem: ISoldItemDetails) {
 		if (itemIndex < 0) {
 			// Item does not exist in the array
 			// push the item
@@ -38,7 +38,7 @@ export class SalesService {
 			// Item exists
 			// update the quantity
 			// then update the datastore
-			const scannedItems: ISaleItem[] = [...this.scannedItems$.value];
+			const scannedItems: ISoldItemDetails[] = [...this.scannedItems$.value];
 			scannedItems[itemIndex].quantitySold += saleItem.quantitySold;
 			scannedItems[itemIndex].subTotal += saleItem.subTotal;
 			scannedItems[itemIndex].salesTotal += saleItem.salesTotal;
@@ -47,8 +47,8 @@ export class SalesService {
 		}
 	}
 
-	private newSaleItem({ newItem, quantity }: { newItem: { _id: string; _rev: string; barcode: number; name: string; price: number; unit: string; discount: number; }; quantity: number; }): ISaleItem {
-		let saleItem = {} as ISaleItem;
+	private newSaleItem({ newItem, quantity }: { newItem: { _id: string; _rev: string; barcode: number; name: string; price: number; unit: string; discount: number; }; quantity: number; }): ISoldItemDetails {
+		let saleItem = {} as ISoldItemDetails;
 
 		saleItem.discount = newItem.discount;
 		saleItem.quantitySold = quantity;
@@ -72,7 +72,7 @@ export class SalesService {
 		}
 	}
 
-	processTransaction(items: ISaleItem[]) {
+	processTransaction(items: ISoldItemDetails[]) {
 		let transaction = {
 			date: '',
 			subtotal: 0,
