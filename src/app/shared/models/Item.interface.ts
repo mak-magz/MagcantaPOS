@@ -5,6 +5,5 @@ export interface IItem {
 	quantity: number;
 	unit: string;
 	discount: number;
-	_id: string,
-	_rev: string;
+	category: string;
 }
