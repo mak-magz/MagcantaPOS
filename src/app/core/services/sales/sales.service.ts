@@ -40,13 +40,13 @@ export class SalesService {
 			// Item exists
 			// update the quantity
 			// then update the datastore
-			// const scannedItems: ISoldItemDetails[] = [...this.scannedItems$.value];
-			// scannedItems[itemIndex].quantitySold += saleItem.quantitySold;
-			// scannedItems[itemIndex].subTotal += saleItem.subTotal;
-			// scannedItems[itemIndex].salesTotal += saleItem.salesTotal;
 
 			const scannedItems: ISoldItem[] = [...this.scannedItems$.value];
-			scannedItems[itemIndex].updateSale({ salesTotal: saleItem.soldItem.salesTotal, quantity: saleItem.soldItem.quantitySold, subTotal: saleItem.soldItem.subTotal });
+			scannedItems[itemIndex].updateSale({
+				salesTotal: saleItem.soldItem.salesTotal,
+				quantity: saleItem.soldItem.quantitySold,
+				subTotal: saleItem.soldItem.subTotal
+			});
 			this.scannedItems$.next(scannedItems)
 		}
 	}
