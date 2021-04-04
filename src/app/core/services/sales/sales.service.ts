@@ -42,12 +42,13 @@ export class SalesService {
 			// then update the datastore
 
 			const scannedItems: ISoldItem[] = [...this.scannedItems$.value];
-			scannedItems[itemIndex].updateSale({
+			const item = scannedItems.splice(itemIndex, 1);
+			item[0].updateSale({
 				salesTotal: saleItem.soldItem.salesTotal,
 				quantity: saleItem.soldItem.quantitySold,
 				subTotal: saleItem.soldItem.subTotal
 			});
-			this.scannedItems$.next(scannedItems)
+			this.scannedItems$.next([...item, ...scannedItems])
 		}
 	}
 
