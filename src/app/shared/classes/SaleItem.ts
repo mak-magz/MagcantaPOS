@@ -14,7 +14,7 @@ export class SaleItem implements ISoldItem {
 
 		const { quantity, lastUpdatedOn, ...newItem } = item;
 
-		this.soldItem = this.calculateSale(item)
+		this.soldItem = this.calculateSale({ ...newItem })
 	}
 
 	private calculateSale(newItem: { _id: string; _rev: string; barcode: number; name: string; price: number; unit: string; discount: number; }): ISoldItemDetails {
