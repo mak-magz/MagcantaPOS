@@ -37,7 +37,7 @@ export class SoldItem implements ISoldItem {
 		this.soldItem.salesTotal =
 			this.soldItem.subTotal -
 			this.soldItem.discount * this.soldItem.quantitySold;
-		console.log('sale total: ', this.soldItem.salesTotal);
+		// console.log('sale total: ', this.soldItem.salesTotal);
 
 		return { ...this.soldItem, ...newItem };
 	}

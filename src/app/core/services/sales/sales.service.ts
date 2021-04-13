@@ -2,7 +2,7 @@ import { ISoldItem } from 'src/app/shared/models/sold-item.interface';
 import { IItemDocument } from 'src/app/shared/models/item-document.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { SoldItem } from 'src/app/shared/classes/SaleItem';
+import { SoldItem } from 'src/app/shared/classes/SoldItem';
 import { ISoldItemDetails } from 'src/app/shared/models/sold-item-detail.interface';
 
 @Injectable({
