@@ -13,12 +13,12 @@ import { ItemService } from 'src/app/shared/services/inventory/item.service';
 })
 export class ScannedItemsTableComponent implements OnInit {
 	displayedColumns: string[] = [
-		"item",
-		"quantity",
-		"unit",
-		"price",
-		"discount",
-		"total",
+		'item',
+		'quantity',
+		'unit',
+		'price',
+		'discount',
+		'total',
 	];
 
 	sales = {
@@ -29,39 +29,43 @@ export class ScannedItemsTableComponent implements OnInit {
 		netTotal: 0,
 	};
 
-	displayedFooter: string[] = ["sub", "total"];
-	dataSource: Observable<ISoldItem[]>
+	displayedFooter: string[] = ['sub', 'total'];
+	dataSource: Observable<ISoldItem[]>;
 	transaction: Observable<any>;
 	constructor(
 		private itemService: ItemService,
 		private salesService: SalesService
-	) { }
+	) {}
 
 	ngOnInit() {
-		this.dataSource = this.salesService._allScannedItems.pipe(map(data => {
-			console.warn("data", data)
-			this.salesService.processTransaction(data);
-			return data
-		}))
+		this.dataSource = this.salesService._allScannedItems.pipe(
+			map((data) => {
+				console.group('SCANNED ITEMS');
+				console.table(data.map((items) => items.soldItem));
+				console.groupEnd();
+				this.salesService.processTransaction(data);
+				return data;
+			})
+		);
 
 		this.transaction = this.salesService._transaction;
 	}
 
 	async scanItem() {
 		const id = this.randomID();
-		console.log(id)
+		console.log('Scanned Item Barcode: ', id);
+
 		const { result, error } = await this.itemService.searchItem(id);
 
 		if (result.docs.length > 0) {
 			const item = result.docs[0];
-			this.salesService.addItem(item as IItemDocument)
+			this.salesService.addItem(item as IItemDocument);
 		} else {
-			console.log("item not found")
+			console.log('item not found');
 		}
 	}
 
 	randomID() {
 		return Math.floor(Math.random() * 11);
 	}
-
 }

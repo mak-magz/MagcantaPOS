@@ -2,20 +2,19 @@ import { ISoldItem } from 'src/app/shared/models/sold-item.interface';
 import { IItemDocument } from 'src/app/shared/models/item-document.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { SaleItem } from 'src/app/shared/classes/SaleItem';
+import { SoldItem } from 'src/app/shared/classes/SaleItem';
 import { ISoldItemDetails } from 'src/app/shared/models/sold-item-detail.interface';
 
 @Injectable({
-	providedIn: 'root'
+	providedIn: 'root',
 })
 export class SalesService {
-
 	private scannedItems$ = new BehaviorSubject([]);
 	private transaction$ = new BehaviorSubject({});
-	constructor() { }
+	constructor() {}
 
 	get _allScannedItems(): Observable<ISoldItem[]> {
-		return this.scannedItems$.asObservable()
+		return this.scannedItems$.asObservable();
 	}
 
 	get _transaction(): Observable<any> {
@@ -23,10 +22,10 @@ export class SalesService {
 	}
 
 	addItem(item: IItemDocument, quantitySold = 1) {
-		const itemIndex = this.checkItem(item.barcode)
+		const itemIndex = this.checkItem(item.barcode);
 		const { quantity, lastUpdatedOn, ...newItem } = item;
 
-		const saleItem: ISoldItem = new SaleItem(item, quantitySold);
+		const saleItem: ISoldItem = new SoldItem(item, quantitySold);
 
 		this.updateScannedItem(itemIndex, saleItem);
 	}
@@ -46,9 +45,9 @@ export class SalesService {
 			item[0].updateSale({
 				salesTotal: saleItem.soldItem.salesTotal,
 				quantity: saleItem.soldItem.quantitySold,
-				subTotal: saleItem.soldItem.subTotal
+				subTotal: saleItem.soldItem.subTotal,
 			});
-			this.scannedItems$.next([...item, ...scannedItems])
+			this.scannedItems$.next([...item, ...scannedItems]);
 		}
 	}
 
@@ -65,14 +64,12 @@ export class SalesService {
 	// }
 
 	checkItem(sku: number) {
-		console.log("sku: ", sku)
+		// console.log('Searching for item with barcode', sku);
 		const items: ISoldItem[] = [...this.scannedItems$.value];
-		const item = items.find(item => item.soldItem.barcode === sku);
+		const item = items.find((item) => item.soldItem.barcode === sku);
 		if (item) {
-			console.log('Item exist: ', item);
 			return items.indexOf(item);
 		} else {
-			console.log('Item does not exist');
 			return -1;
 		}
 	}
@@ -85,17 +82,19 @@ export class SalesService {
 			totalTax: 0,
 			totalItems: 0,
 			totalAmount: 0,
-			items: []
-		}
+			items: [],
+		};
+		transaction.items = [...items];
 
-		items.map(item => {
+		items.map((item) => {
 			transaction.subtotal += item.soldItem.subTotal;
-			transaction.totalDiscount += item.soldItem.discount * item.soldItem.quantitySold;
+			transaction.totalDiscount +=
+				item.soldItem.discount * item.soldItem.quantitySold;
 			transaction.totalItems += item.soldItem.quantitySold;
 			transaction.totalAmount += item.soldItem.salesTotal;
-		})
+		});
 
-		this.transaction$.next(transaction)
-		console.log(transaction)
+		this.transaction$.next(transaction);
+		console.log('Transaction Info: ', transaction);
 	}
 }
